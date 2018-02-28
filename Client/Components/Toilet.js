@@ -1,0 +1,50 @@
+import React from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+
+const Toilet = (props) => {
+  const { name, rating, unisex, stallsMen, stallsWomen, urinals, changingTable, needBuy } = props.navigation.state.params;
+  return (
+    <View style={styles.container}>
+      <Image
+      source={require('../../toilet.jpg')}
+      style={styles.image}
+      />
+      <View style={styles.amenities}>
+        <Text style={styles.amenitiesText}><Text style={styles.amenity}>Rating: </Text>{rating}</Text>
+        <Text style={styles.amenitiesText}><Text style={styles.amenity}>Unisex: </Text>{unisex ? 'Yes': 'No'}</Text>
+        <Text style={styles.amenitiesText}><Text style={styles.amenity}>Men's stalls: </Text>{stallsMen}</Text>
+        <Text style={styles.amenitiesText}><Text style={styles.amenity}>Urinals: </Text>{urinals}</Text>
+        <Text style={styles.amenitiesText}><Text style={styles.amenity}>Women's stalls: </Text>{stallsWomen}</Text>
+        <Text style={styles.amenitiesText}><Text style={styles.amenity}>Changing Table: </Text>{changingTable ? 'Yes': 'No'}</Text>
+        <Text style={styles.amenitiesText}><Text style={styles.amenity}>Need to pay: </Text>{needBuy ? 'Yes' : 'No'}</Text>
+      </View>
+    </View>
+  )
+}
+
+const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    alignItems: 'center',
+    flex: 1
+  },
+  amenity: {
+    fontWeight: 'bold'
+  },
+  amenities: {
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap'
+  },
+  amenitiesText: {
+    marginLeft: 10,
+    fontSize: 20
+  },
+  image: {
+    width: 400,
+    height: 400
+  }
+})
+
+export default Toilet;
