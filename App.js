@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Home, Toilet } from './Client/Components';
-
+console.log('hello');
 const RootNavigator = StackNavigator({
   Main: {
     screen: Home,
