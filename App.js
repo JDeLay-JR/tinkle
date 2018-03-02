@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Home, Toilet, Signup, Login, Logout } from './Client/Components';
 import firebase from 'firebase';
+
 var config = {
   apiKey: "AIzaSyBi6NksjjFC7txajSPi7Bjqqc_dYJGUMmA",
   authDomain: "tinkle-465a9.firebaseapp.com",
@@ -12,6 +13,28 @@ var config = {
   messagingSenderId: "598058718515"
 };
 firebase.initializeApp(config);
+
+const firestore = require('firebase/firestore');
+const db = firebase.firestore();
+
+db.collection("users").add({
+  first: "Ada",
+  last: "Lovelace",
+  born: 1815
+})
+.then(function(docRef) {
+  console.log("Document written with ID: ", docRef.id);
+})
+.catch(function(error) {
+  console.error("Error adding document: ", error);
+});
+
+db.collection("users").get().then((querySnapshot) => {
+  querySnapshot.forEach((doc) => {
+      console.log(`${doc.id} => ${doc.data()}`);
+  });
+});
+
 const RootNavigator = StackNavigator({
   Main: {
     screen: Home,

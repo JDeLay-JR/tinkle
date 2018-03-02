@@ -9,7 +9,6 @@ const Toilet = (props) => {
   const { name, rating, unisex, stallsMen, stallsWomen, urinals, changingTable, needBuy } = props.navigation.state.params;
   return (
     <View style={styles.container}>
-      {console.log(width, height, 'hi')}
       <View height={height / 2}>
         <Swiper style={styles.wrapper}>
           <View style={styles.slide}>
