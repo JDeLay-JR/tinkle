@@ -13,7 +13,7 @@ export default class LandingPage extends Component {
         }
     }
     async enterApp() {
-        const {email, password} = this.state;
+        let {email, password} = this.state;
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then(() => this.setState({error: '', loading: false}))
             .catch(() => {
@@ -34,7 +34,7 @@ export default class LandingPage extends Component {
             <TextInput   onChangeText={password => this.setState({ password })} value={this.state.password} secureTextEntry placeholderTextColor='white' placeholder="password" style={styles.textInput}/>
             <TouchableOpacity style={styles.enterButton} onPress={() => this.enterApp()}><Text style={{color: 'white', fontFamily: 'AvenirNext-UltraLight' }}>Enter</Text></TouchableOpacity>
             </ImageBackground>
-           
+
             </View>
         )
     }
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
         fontSize: 25
     },
     textInput: {
-        borderBottomColor: 'white', 
-        borderBottomWidth: StyleSheet.hairlineWidth, 
+        borderBottomColor: 'white',
+        borderBottomWidth: StyleSheet.hairlineWidth,
         width: '70%',
         color: 'white',
         fontFamily: 'AvenirNext-UltraLight',
