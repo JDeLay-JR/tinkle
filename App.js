@@ -1,45 +1,42 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import { StackNavigator } from 'react-navigation';
-import { Home, Toilet, Signup, Login, Logout } from './Client/Components';
+import { Home, Toilet, LandingPage, Logout } from './Client/Components';
 import firebase from 'firebase';
+// import * as firebaseui from 'firebaseui';
 
-var config = {
-  apiKey: "AIzaSyBi6NksjjFC7txajSPi7Bjqqc_dYJGUMmA",
-  authDomain: "tinkle-465a9.firebaseapp.com",
-  databaseURL: "https://tinkle-465a9.firebaseio.com",
-  projectId: "tinkle-465a9",
-  storageBucket: "tinkle-465a9.appspot.com",
-  messagingSenderId: "598058718515"
-};
-firebase.initializeApp(config);
+firebase.initializeApp({
+  apiKey: "AIzaSyDojhscgLe7sTB3g9FgE9ybjJCvbCZ1JJw",
+  authDomain: "tinkle-8fdd8.firebaseapp.com",
+  databaseURL: "https://tinkle-8fdd8.firebaseio.com",
+  projectId: "tinkle-8fdd8",
+  storageBucket: "tinkle-8fdd8.appspot.com",
+  messagingSenderId: "1009503027788"
+});
+require("firebase/auth");
 
-const firestore = require('firebase/firestore');
+
+const firestore = require("firebase/firestore");
 const db = firebase.firestore();
 
-db.collection("users").add({
-  first: "Ada",
-  last: "Lovelace",
-  born: 1815
-})
-.then(function(docRef) {
-  console.log("Document written with ID: ", docRef.id);
-})
-.catch(function(error) {
-  console.error("Error adding document: ", error);
-});
-
-db.collection("users").get().then((querySnapshot) => {
-  querySnapshot.forEach((doc) => {
-      console.log(`${doc.id} => ${doc.data()}`);
-  });
-});
+// db.collection("users").add({
+//   first: "Ada",
+//   last: "Lovelace",
+//   born: 1815
+// })
+// .then(function(docRef) {
+//   console.log("Document written with ID: ", docRef.id);
+// })
+// .catch(function(error) {
+//   console.error("Error adding document: ", error);
+// });
 
 const RootNavigator = StackNavigator({
   Main: {
     screen: Home,
     navigationOptions: {
-      headerTitle: 'Tinkle'
+      headerTitle: 'Tinkle',
+      // headerRight: (<View><Button title="logout" onPress={() => firebase.auth().signOut().then(a => console.log(a))}></Button></View>)
     },
   },
   Toilet: {
@@ -60,12 +57,37 @@ const styles = StyleSheet.create({
 });
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true
+    }
+  }
+  // componentDidMount() {
+  //   this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
+  //     this.setState({
+  //       loading: false,
+  //       user
+  //     })
+  //   })
+  //   console.log(this.state.user)
+  // }
+  // componentWillUnmount() {
+  //   this.authSubscription();
+  // }
   render() {
-    return (
-      <View style={styles.container}>
-        <RootNavigator />
-      </View>
-    );
+      // console.log(this.state.user, 'user')
+      // if(this.state.loading) return <Text>Welcome</Text>;
+      // if(this.state.user) {
+        return (
+          <View style={styles.container}>
+            <RootNavigator />
+          </View>
+        );
+    //   }
+    //  return (
+    //    <LandingPage />
+    //  )
   }
 }
 

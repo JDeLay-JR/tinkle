@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { MapView } from 'expo';
 import toilets from '../../ToiletSeed';
-
 class Home extends React.Component {
   render() {
     let { width, height } = Dimensions.get('window');
@@ -63,6 +62,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     flex: 1,
+    backgroundColor: 'rgba(74, 74, 74, 1)'
   },
   map: {
     flex: 1,
