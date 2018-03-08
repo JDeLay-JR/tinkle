@@ -2,7 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, Dimensions, Button } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { MapView } from 'expo';
-import toilets from '../../ToiletSeed';
+import { toilets } from '../../Server/db/ToiletSeed'
+
 class Home extends React.Component {
   render() {
     let { width, height } = Dimensions.get('window');

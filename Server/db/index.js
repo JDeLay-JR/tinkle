@@ -33,5 +33,4 @@ db.collection("users").get().then((querySnapshot) => {
   });
 });
 
-
 module.exports = db;

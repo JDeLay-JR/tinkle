@@ -13,13 +13,13 @@ const Toilet = (props) => {
         <Swiper style={styles.wrapper}>
           <View style={styles.slide}>
             <Image
-              source={require('../../toilet.jpg')}
+              source={require('../../Public/toilet.jpg')}
               style={styles.image}
             />
           </View>
           <View style={styles.slide}>
             <Image
-              source={require('../../babypee.jpg')}
+              source={require('../../Public/babypee.jpg')}
               style={styles.image}
             />
           </View>

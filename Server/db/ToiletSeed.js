@@ -29,4 +29,4 @@ const toilets = [
   }
 ]
 
-export default toilets;
+module.exports = { toilets }
