@@ -3,6 +3,7 @@ import { View, StyleSheet} from 'react-native';
 import firebase from 'firebase';
 import {firebaseConfig} from '../tinkle/secrets'
 import RootNavigator from './Navigation'
+import firestore from 'firebase/firestore'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -11,8 +12,10 @@ export default class App extends React.Component {
       loading: true
     }
   }
-  componentDidMount() {
+  async componentDidMount() {
     firebase.initializeApp(firebaseConfig)
+    const db = firebase.firestore();
+    const toilets = await db.collection("bathrooms").get()
     this.authSubscription = firebase.auth().onAuthStateChanged((user) => {
       this.setState({
         loading: false,
@@ -25,9 +28,10 @@ export default class App extends React.Component {
   }
 
   render() {
+    // console.log(toilets)
         return (
           <View style={styles.container}>
-            <RootNavigator />
+            <RootNavigator/>
           </View>
         );
   }

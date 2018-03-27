@@ -27,7 +27,6 @@ const RootNavigator = StackNavigator({
     screen: Home,
     navigationOptions: {
       headerTitle: 'Tinkle',
-      //PASS NAVIGATE INTO PROPS
       headerRight: (<LogOut props={this} />)
     },
   },
