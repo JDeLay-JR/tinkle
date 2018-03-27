@@ -1,5 +1,3 @@
-// firebase.auth().createUserWithEmailAndPassword(email, password)
-//                     .then(() => firebase.auth().getUserByEmail(email).then(person => console.log(person, 'got him!')))
 import React, {Component} from 'react';
 import {Text, View, StyleSheet, ImageBackground, TextInput, TouchableOpacity} from 'react-native';
 import firebase from 'firebase';
@@ -26,7 +24,7 @@ export default class SignUp extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <ImageBackground style={styles.image} source={require('../../Public/signupimg.jpg')}>
+                <ImageBackground style={styles.image} source={require('../../public/signupimg.jpg')}>
                     {/* Header and Sub-Header */}
                     <Text style={styles.paragraph}>Tinkle</Text>
                     <Text style={styles.sub}>Create an Account</Text>

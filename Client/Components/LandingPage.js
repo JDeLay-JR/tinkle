@@ -22,11 +22,12 @@ export default class LandingPage extends Component {
             this.setState({ error: 'Authentication failed.'})
         }
     }
+
     render() {
         return (
 
             <View style={styles.container}>
-                <ImageBackground style={styles.image} source={require('../../Public/signupimg.jpg')}>
+                <ImageBackground style={styles.image} source={require('../../public/signupimg.jpg')}>
                     {/* Header and Sub-Header */}
                     <Text style={styles.paragraph}>Tinkle</Text>
                     <Text style={styles.sub}>If you gotta go, you gotta go</Text>
