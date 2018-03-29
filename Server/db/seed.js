@@ -1,67 +1,74 @@
-//Parsing Modules
-const fs = require('fs');
-const parse = require('xml-parser');
-
-//Firebase Modules
+const soda = require('soda-js')
+var bathromAPI = new soda.Consumer('data.cityofnewyork.us');
 const firebase = require('firebase/app');
 const {firebaseConfig} = require('../../secrets')
 const firestore = require('firebase/firestore');
-firebase.initializeApp(firebaseConfig)
+const {mapKey} = require('../../secrets')
+let Geocoder = require('@google/maps').createClient({key: mapKey, Promise: Promise})
 
-//Firestore Database
+firebase.initializeApp(firebaseConfig)
 const db = firebase.firestore();
 
-//Google Maps Modules
-const {mapKey} = require('../../secrets')
-let googleMapsClient = require('@google/maps').createClient({key: mapKey, Promise: Promise})
+//Function that grabs all the usable data from the API and writes it to firestore(unstructured)
+//Can add optional .limit() after .withDataset() for testing
 
-//XML Parsing Functionality
-const xmlFileToParse = '/bathroomData.xml'
+const seedUnformattedData = () => {
+  bathromAPI.query()
+  .withDataset('r27e-u3sy')
+  .getRows()
+    .on('success', function(rows) {
+      rows.forEach(element => {
+        db.collection('raw_bathroom_data').add({...element})
+          .then(entry => console.log('Document written with ID: ', entry.id))
+        })
+    })
+    .on('error', function(error) { console.error(error); });
+}
 
-let parsingFunction = async (file) => {
+//Reference to the raw data collection after seedUnformattedData runs
+const raw_bathroom_data = db.collection('raw_bathroom_data');
+
+
+//Takes an unstructured bathroom object, geocodes it, and returns a properly structured bathroom object
+let structureBathroom = async doc => {
   try {
-    let arrOfLocales = []
-    let data = await fs.readFileSync(__dirname + `${file}`, 'utf8')
-    let obj = await parse(data);
-    let root = await obj.root.children[0].children
-    //CHANGE LENGTH PARAM
-    for (let i = 0; i < root.length; i++) {
-      let name = await root[i].children[0].content.toString()
-      let location = await root[i].children[1].content.toString()
-      let borough = await root[i].children[root[i].children.length - 1].content.toString();
-      arrOfLocales.push(`${name}, ${location}, ${borough}, NY`)
+    let bathroom = await doc.data()
+    const address = `${bathroom.name}, ${bathroom.location}, ${bathroom.borough}, NY`
+    const geocodeOutput = await Geocoder.geocode({address}).asPromise()
+    let response = await geocodeOutput.json.results[0]
+    if (response) {
+      let formattedAddress = await response.formatted_address
+      let coords = await response.geometry.location
+      let formattedDataObj = {
+          name: bathroom.name,
+          address: formattedAddress,
+          coords: coords
+        }
+      return formattedDataObj
     }
-    return arrOfLocales
   } catch (err) {
-    console.log(err)
+    console.error(err)
   }
 }
 
-let seed = () =>
-parsingFunction(xmlFileToParse)
-.then(arrOfLocations => {
-  arrOfLocations.forEach(async location => {
-    let singleLocation = {}
-    singleLocation.name = location.split(',')[0]
-    await googleMapsClient.geocode({address: location}).asPromise()
-    .then(geocode => {
-      if (geocode.json.results !== []) {
-        singleLocation.address = geocode.json.results[0].formatted_address
-        singleLocation.latitude = geocode.json.results[0].geometry.location.lat
-        singleLocation.longitude = geocode.json.results[0].geometry.location.lng
-        }
-      })
-      db.collection("bathrooms").add({
-            name: singleLocation.name,
-            address: singleLocation.address,
-            lat: singleLocation.latitude,
-            long: singleLocation.longitude
-          })
-      .then(entry => console.log("Document written with ID: ", entry.id))
+//Returns an array of properly stuctured bathroom objects ready to be written to firestore
+let seedFormattedData = async () => {
+  try {
+    const unformattedData = await raw_bathroom_data.get()
+    unformattedData.forEach(async doc => {
+      let formattedBathroom = await structureBathroom(doc)
+      //Checks to make sure the obj isn't empty, geocode sometimes returns empty objs
+        db.collection('NYC').add(formattedBathroom)
+        .then(entry => {console.log('Document written with ID: ', entry.id)})
     })
-})
+  } catch (err) {
+    console.error(err)
+  }
+}
 
-// seed()
-db.collection("bathrooms").get().then(function(querySnapshot) {
-  console.log(querySnapshot.size);
-});
+//Uncomment to requery NYC public data and reseed firestore
+//Don't do this often, we will hit the firestore limit
+
+// seedUnformatted()
+// seedFormattedData()
+

@@ -21,10 +21,12 @@
   "dependencies": {
     "@firebase/firestore": "^0.3.4",
     "@google/maps": "^0.4.5",
+    "cheerio": "^1.0.0-rc.2",
     "expo": "^25.0.0",
     "firebase": "^4.9.0",
     "firebaseui": "^2.6.2",
     "lodash": "^4.17.5",
+    "npm": "^5.8.0",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-blur": "^3.2.2",
@@ -34,8 +36,12 @@
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
+    "request": "^2.85.0",
+    "request-promise": "^4.2.2",
+    "soda-js": "^0.2.3",
     "util": "^0.10.3",
     "watchman": "^1.0.0",
-    "xml-parser": "^1.2.1"
+    "xml-parser": "^1.2.1",
+    "xml2js": "^0.4.19"
   }
 }

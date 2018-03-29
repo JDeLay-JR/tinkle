@@ -1,26 +1,26 @@
 import { StackNavigator } from 'react-navigation';
-import { Home, Toilet, LandingPage, SignUp } from './client/components';
+import {StyleSheet} from 'react-native'
+import { Home, LandingPage} from './client/components';
+
+const style = StyleSheet.create({
+  header: {
+    shadowColor: 'transparent'
+  }
+})
 
 const RootNavigator = StackNavigator({
   LandingPage: {
-    screen: LandingPage
+    screen: LandingPage,
+    navigationOptions: {
+      headerTransparent: true,
+      headerStyle: style.header
+    }
   },
   Home: {
     screen: Home,
     navigationOptions: {
       headerTitle: 'Tinkle'
-    },
-  },
-  Toilet: {
-    screen: Toilet,
-    navigationOptions: {
-      headerTitle: 'Toilet',
-      headerTitleStyle: { alignSelf: 'center' }
     }
-  },
-  SignUp: {
-    screen: SignUp
   }
 });
-
 export default RootNavigator
