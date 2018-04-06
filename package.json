@@ -13,7 +13,10 @@
     "eject": "react-native-scripts eject",
     "android": "react-native-scripts android",
     "ios": "react-native-scripts ios",
-    "test": "node node_modules/jest/bin/jest.js"
+    "test": "node node_modules/jest/bin/jest.js",
+    "seed": "node server/db/seed.js",
+    "start-dev": "NODE_ENV='development' npm run start-server",
+    "start-server": "nodemon server -e html,js,scss --ignore public"
   },
   "jest": {
     "preset": "jest-expo"
@@ -21,12 +24,25 @@
   "dependencies": {
     "@firebase/firestore": "^0.3.4",
     "@google/maps": "^0.4.5",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.2",
     "cheerio": "^1.0.0-rc.2",
+    "compression": "^1.7.2",
     "expo": "^25.0.0",
+    "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
     "firebase": "^4.9.0",
     "firebaseui": "^2.6.2",
+    "google-geocoder": "^0.2.1",
+    "graphql": "^0.13.2",
+    "koa": "^2.5.0",
+    "koa-bodyparser": "^4.2.0",
     "lodash": "^4.17.5",
+    "node-geocoder": "^3.22.0",
+    "nodemon": "^1.17.3",
     "npm": "^5.8.0",
+    "pg": "^7.4.1",
+    "pg-hstore": "^2.3.2",
     "react": "16.2.0",
     "react-native": "0.52.0",
     "react-native-blur": "^3.2.2",
@@ -38,10 +54,13 @@
     "redux-thunk": "^2.2.0",
     "request": "^2.85.0",
     "request-promise": "^4.2.2",
+    "sequelize": "^4.37.5",
     "soda-js": "^0.2.3",
     "util": "^0.10.3",
+    "volleyball": "^1.4.1",
     "watchman": "^1.0.0",
     "xml-parser": "^1.2.1",
-    "xml2js": "^0.4.19"
+    "xml2js": "^0.4.19",
+    "zipcodes": "^6.0.0"
   }
 }
