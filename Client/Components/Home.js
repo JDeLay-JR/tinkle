@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Text, View, Button } from 'react-native';
-import { MapView, Location, Permissions } from 'expo';
+import { MapView, Location, Permissions, Marker } from 'expo';
+import axios from 'axios'
+import {IP} from '../../secrets'
 import {styles} from '../../public/stylesheets/styles_Home'
 
 class Home extends Component {
@@ -13,12 +15,15 @@ class Home extends Component {
           longitude: -74
         }
       },
-      error: null
+      error: null,
+      bathrooms : []
     };
   }
 
-  componentDidMount() {
-    this._getLocationAsync();
+  async componentDidMount() {
+    await this._getLocationAsync();
+    axios.post(`http://${IP}/getBathrooms`, this.state.location.coords)
+    .then(res => this.setState({bathrooms: res.data}))
   }
 
   _getLocationAsync = async () => {
@@ -29,6 +34,8 @@ class Home extends Component {
  };
 
   render() {
+    const {bathrooms} = this.state
+    console.log(bathrooms)
     return (
       <View style={styles.container}>
         <MapView
@@ -38,22 +45,25 @@ class Home extends Component {
           showsMyLocationButton={true}
           zoomEnabled={true}
           >
+          {
+            bathrooms.map(bathroom => {
+        return (
+              <MapView.Marker
+              key = {bathroom.id}
+              coordinate={{
+                latitude: bathroom.coords.lat,
+                longitude: bathroom.coords.lng,
+              }}
+              title={bathroom.name}
+              />
+              )
+            })
+          }
 
         </MapView>
       </View>
     );
   }
 }
-
-      // <MapView.Marker
-      //   key={toilet.name}
-      //   coordinate={toilet.latlng}
-      //   title={toilet.name}
-      // >
-      //   <MapView.Callout>
-      //     <Text style={styles.calloutText}>{toilet.name}</Text>
-      //     <Button title="Dirty Deets" />
-      //   </MapView.Callout>
-      // </MapView.Marker>
 
 export default Home;
